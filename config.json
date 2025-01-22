@@ -1,0 +1,5 @@
+{
+  "mode": "full_line",
+  "proxy_file": "proxies.txt",
+  "input_file": "input.txt"
+}
