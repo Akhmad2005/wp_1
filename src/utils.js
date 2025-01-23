@@ -19,31 +19,6 @@ async function isWordPressLoginPage(page) {
 	}
 }
 
-async function tryLogin(page, login, password) {
-  try {
-		await page.type('#user_login', login);
-		await page.type('#user_pass', password);
-		await page.click('#wp-submit');
-
-		await page.waitForNavigation();
-
-		const result = await page.evaluate(() => {
-			const loginUrl = page.url().includes('wp-login.php');
-      const passwordInput = document.getElementById('user_pass') !== null;
-      const loginDiv = document.getElementById('login') !== null;
-      if (loginUrl || passwordInput && loginDiv)  {
-				return 'bad';
-			} else {
-				return 'good';
-			}
-    });
-		return result
-	} catch (error) {
-		console.error('Error in login:', error?.message);
-		return 'bad';
-	}
-}
-
 async function takeScreenshot(page, name) {
   await page.screenshot({
     path: `screenshots/${name}`,
@@ -51,4 +26,4 @@ async function takeScreenshot(page, name) {
   });
 }
 
-module.exports = { doesUrlHasPath, isWordPressLoginPage, tryLogin, takeScreenshot };
+module.exports = { doesUrlHasPath, isWordPressLoginPage, takeScreenshot };

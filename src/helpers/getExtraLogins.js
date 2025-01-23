@@ -1,4 +1,4 @@
-const {getBrowser} = require('./puppeteer')
+const PuppeteerManager = require('./puppeteer')
 
 async function findLoginFromUrl(page, url) {
 	try {
@@ -47,10 +47,13 @@ async function findLoginFromJSON(page, url) {
 }
 
 const getExtraLogins = async (url) => {
+	let puppeteer = new PuppeteerManager()
+	let browser;
 	let logins = [];
 	let page;
 	try {
-		let browser = getBrowser();
+		await puppeteer.launchBrowser();
+		browser = puppeteer.getBrowser();
 		page = await browser.newPage();
 		let login = await findLoginFromUrl(page, url);
 		if (login) logins.push(login)
@@ -60,7 +63,7 @@ const getExtraLogins = async (url) => {
 		} catch (error) {
 		console.error('Error while getting login:', error?.message);
 	} finally {
-		page?.close();
+		await puppeteer.closeBrowser();
 		return logins;
 	}
 }

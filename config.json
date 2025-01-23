@@ -1,5 +1,7 @@
 {
-  "mode": "full_line",
+  "mode": "with_proxy",
+  "proxy_mode": "iteration",
   "proxy_file": "proxies.txt",
-  "input_file": "input.txt"
+  "input_file": "lines.txt",
+  "thread_count": 5
 }
