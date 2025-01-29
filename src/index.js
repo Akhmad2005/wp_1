@@ -131,14 +131,23 @@ const getActiveWorkersCount = () => {
 
 const logStat = async () => {
   const intervalId = setInterval(() => {
-    console.log(`Проверка ${stats.linesDone}/${stats.linesCount}, Гуды: ${stats.goods}, Бэды: ${stats.bads}, Ошибки: ${stats.errors}, Потоки: ${getActiveWorkersCount()}/${threadCount}, Прогресс: ${getPrecentage(stats.linesDone, stats.linesCount)}%`);
+    const now = new Date();
+    const formattedTime = now.toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    console.log(`[${formattedTime}] Проверка ${stats.linesDone}/${stats.linesCount}, Гуды: ${stats.goods}, Бэды: ${stats.bads}, Ошибки: ${stats.errors}, Потоки: ${getActiveWorkersCount()}/${threadCount}, Прогресс: ${getPrecentage(stats.linesDone, stats.linesCount)}%`);
     if (endOfFile && !getActiveWorkersCount()) {
       console.log('Процесс завершен.');
       clearInterval(intervalId);
       clearInterval(workersQueueInterval);
       process.exit();
     }
-  }, 4000);
+  }, 10000);
 }
 
 async function init () {
