@@ -2,6 +2,7 @@ const fs = require('fs');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha');
+const AnonymizeUAPlugin = require('puppeteer-extra-plugin-anonymize-ua');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 const advanced_output = config.advanced_output;
@@ -17,6 +18,7 @@ class PuppeteerManager {
   async launchBrowser(args = []) {
     try {
       puppeteer.use(StealthPlugin());
+      puppeteer.use(AnonymizeUAPlugin());
       puppeteer.use(
         RecaptchaPlugin({
           provider: { id: '2captcha', token: '5f31a4f92dcdf0ab0ef0ae07fbf7fb4b' },

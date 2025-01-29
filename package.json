@@ -12,6 +12,7 @@
     "proxy-chain": "^2.5.6",
     "puppeteer": "^24.1.0",
     "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",
     "puppeteer-extra-plugin-recaptcha": "^3.6.8",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "split2": "^4.2.0"
