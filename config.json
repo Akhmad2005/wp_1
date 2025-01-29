@@ -6,6 +6,6 @@
   "goods_file_path": "goods.txt",
   "thread_count": 5,
   "batch_size": 2,
-  "advanced_output": true,
+  "advanced_output": false,
   "protocol": "any"
 }
