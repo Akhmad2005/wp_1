@@ -1,4 +1,7 @@
+const fs = require('fs');
 const PuppeteerManager = require('./puppeteer')
+const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+const advanced_output = config.advanced_output;
 
 async function findLoginFromUrl(page, url) {
 	try {
@@ -13,7 +16,7 @@ async function findLoginFromUrl(page, url) {
 		} 
 		return null;
 	} catch (error) {
-		console.error('Error in login from url', error?.message);
+		if (advanced_output) console.error(`Ошибка при поиске логинов с URL: ${url}`, error?.message);
 		return null;
 	}
 }
@@ -26,13 +29,13 @@ async function findLoginFromJSON(page, url) {
 		const response = await page.goto(fullUrl);
 		
 		if (!response || response.status() !== 200) {
-      console.error(`Failed to fetch JSON data. Status: ${response?.status()}`);
+      if (advanced_output) console.error(`Не удалось получить данные JSON. Статус: ${response?.status()}`);
       return names;
     }
 
 		const contentType = response.headers()['content-type'] || '';
     if (!contentType.includes('application/json')) {
-      console.error('Response is not JSON');
+      if (advanced_output) console.error('Ответ не JSON');
       return names;
     }
 
@@ -41,7 +44,7 @@ async function findLoginFromJSON(page, url) {
 			element?.slug && names.push({text: element.slug, from: '/wp-json/wp/v2/users'})
 		});
 	} catch (error) {
-		console.error('Error in login from json', error?.message);
+		if (advanced_output) console.error('Ошибка при поиске логинов из /wp-json/wp/v2/users', error?.message);
 	}
 	return names;
 }
@@ -61,7 +64,7 @@ const getExtraLogins = async (url) => {
 		let loginsFromJson = await findLoginFromJSON(page, url);
 		if (loginsFromJson?.length) logins.push(...loginsFromJson)
 		} catch (error) {
-		console.error('Error while getting login:', error?.message);
+		if (advanced_output) console.error('Ошибка при поиске логинов:', error?.message);
 	} finally {
 		await puppeteer.closeBrowser();
 		return logins;

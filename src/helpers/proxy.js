@@ -1,9 +1,13 @@
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+const advanced_output = config.advanced_output;
+
 const getProxyParts = (proxy) => {
 	if (!proxy) return null;
 	const parts = proxy.split(':');
 	if (parts.length !== 4) {
-			console.error('Invalid proxy format');
-			return null;
+		if (advanced_output) console.error(`Неверный формат прокси: ${proxy}`);
+		return null;
 	}
 
 	const [ip, port, username, password] = parts;

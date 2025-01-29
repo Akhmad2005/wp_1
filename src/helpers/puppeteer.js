@@ -1,4 +1,10 @@
-const puppeteer = require('puppeteer');
+const fs = require('fs');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha');
+
+const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+const advanced_output = config.advanced_output;
 
 class PuppeteerManager {
   constructor() {
@@ -6,50 +12,57 @@ class PuppeteerManager {
   }
 
   /**
-   * Launch the browser with optional arguments
-   * @param {string[]} args - Additional arguments for launching the browser
+   * @param {string[]} args 
    */
   async launchBrowser(args = []) {
     try {
+      puppeteer.use(StealthPlugin());
+      puppeteer.use(
+        RecaptchaPlugin({
+          provider: { id: '2captcha', token: '5f31a4f92dcdf0ab0ef0ae07fbf7fb4b' },
+          visualFeedback: true
+        })
+      );
+      
       const defaultArgs = [
-        '--disable-quic',
-        '--ignore-certificate-errors',
-        '--disable-web-security',
-        '--allow-insecure-localhost',
+        '--no-sandbox', 
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
         '--disable-features=IsolateOrigins,site-per-process',
+        '--ignore-certificate-errors',
+        '--allow-insecure-localhost',
+        '--disable-background-networking',
+        '--disable-software-rasterizer',
+        '--mute-audio',
+        '--disable-extensions',
       ];
 
       this.browser = await puppeteer.launch({
         headless: false,
         args: [...defaultArgs, ...args],
       });
-      // console.log('Browser launched successfully');
     } catch (error) {
-      console.error('Error launching browser:', error?.message);
+      if (advanced_output) console.error('Ошибка при запуске браузера:', error?.message);
     }
   }
 
   /**
-   * Get the currently launched browser instance
-   * @returns {puppeteer.Browser | null} The browser instance, or null if not launched
+   * @returns {puppeteer.Browser | null} 
    */
   getBrowser() {
     return this.browser;
   }
 
-  /**
-   * Close the browser if it's open
-   */
   async closeBrowser() {
     if (this.browser) {
       try {
         await this.browser.close();
-        // console.log('Browser closed successfully');
       } catch (error) {
-        console.error('Error closing browser:', error?.message);
+        if (advanced_output) console.error('Ошибка закрытия браузера:', error?.message);
       }
     } else {
-      console.warn('No browser instance to close');
+      if (advanced_output) console.warn('Нет экземпляра браузера для закрытия');
     }
   }
 }
