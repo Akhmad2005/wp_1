@@ -41,7 +41,7 @@ class PuppeteerManager {
       ];
 
       this.browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: [...defaultArgs, ...args],
       });
     } catch (error) {
