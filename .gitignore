@@ -6,3 +6,4 @@ goods.json
 goods_all.json
 package-lock.json
 *.rar
+.env

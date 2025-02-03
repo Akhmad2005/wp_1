@@ -41,7 +41,7 @@ const checkForMathCaptcha = async (page, queue = 'before') => {
         }
         return true;
       } else {
-        console.error(`Не удалось проанализировать математический вопрос: "${mathQuestion.trim()}"`);
+        if (advanced_output) console.error(`Не удалось проанализировать математический вопрос: "${mathQuestion.trim()}"`);
         return false;
       }
     } else {

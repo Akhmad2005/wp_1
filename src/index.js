@@ -4,6 +4,7 @@ const { saveItem } = require('./helpers/goodsSaver')
 const { getPrecentage, countLinesInFile } = require('./helpers/utils')
 const { Worker } = require('worker_threads');
 const path = require('path');
+require('dotenv').config();
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 const threadCount = config.thread_count

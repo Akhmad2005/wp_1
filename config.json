@@ -5,7 +5,7 @@
   "input_file_path": "lines.txt",
   "goods_file_path": "goods.txt",
   "thread_count": 5,
-  "batch_size": 2,
+  "batch_size": 1,
   "advanced_output": false,
   "protocol": "any"
 }

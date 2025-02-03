@@ -21,7 +21,7 @@ class PuppeteerManager {
       puppeteer.use(AnonymizeUAPlugin());
       puppeteer.use(
         RecaptchaPlugin({
-          provider: { id: '2captcha', token: '5f31a4f92dcdf0ab0ef0ae07fbf7fb4b' },
+          provider: { id: '2captcha', token: process.env.CAPTCHA_TOKEN },
           visualFeedback: true
         })
       );
